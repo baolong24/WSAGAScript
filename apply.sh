@@ -22,7 +22,7 @@ cp -f -a $GAppsOutputFolder/app/* $InstallDir/app
 cp -f -a $GAppsOutputFolder/etc/* $InstallDir/etc
 cp -f -a $GAppsOutputFolder/priv-app/* $InstallDir/priv-app
 cp -f -a $GAppsOutputFolder/framework/* $InstallDir/framework
-cp -fra  $GAppsRoot/product_output/* $MountPointProduct/
+cp -fra  $GAppsRoot/product_output/*Overlay*.apk $MountPointProduct/overlay
 
 echo "Applying root file ownership"
 find $InstallDir/app -exec chown root:root {} &>/dev/null \;
