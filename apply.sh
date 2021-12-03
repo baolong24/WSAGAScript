@@ -18,15 +18,7 @@ get_prop() {
 }
 
 printf 'removing duplicate apps from system\n'
-rm -Rf $InstallDir/apex/com.android.extservices/
-rm -Rf $InstallDir/app/DocumentsUI/
-rm -Rf $InstallDir/app/ExtShared/
 rm -Rf $InstallDir/priv-app/PackageInstaller/
-rm -Rf $InstallDir/priv-app/SoundPicker/
-rm -Rf $MountPointProduct/app/Camera2/
-rm -Rf $MountPointProduct/app/Gallery2/
-rm -Rf $MountPointProduct/app/Music/
-rm -Rf $MountPointProduct/priv-app/Contacts/
 
 echo "Copying GApps files to system..."
 cp -f -a $GAppsOutputFolder/app/* $InstallDir/app
