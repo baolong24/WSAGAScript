@@ -17,9 +17,6 @@ get_prop() {
     grep "^$1=" $2 | cut -d'=' -f2
 }
 
-printf 'removing duplicate apps from system\n'
-rm -Rf $InstallDir/priv-app/PackageInstaller/
-
 echo "Copying GApps files to system..."
 cp -f -a $GAppsOutputFolder/app/* $InstallDir/app
 cp -f -a $GAppsOutputFolder/etc/* $InstallDir/etc
