@@ -2,12 +2,6 @@
 
 . ./VARIABLES.sh
 
-TARGET_PRODUCT="redfin"
-TARGET_DEVICE="redfin"
-PRODUCT_BRAND="google"
-PRODUCT_MODEL="Pixel 5"
-PRODUCT_MANUFACTURER="Google"
-
 # Remove a property from a file, 
 # then append the property with provided value
 # if the property is present before
@@ -22,43 +16,6 @@ remove_append() {
 get_prop() {
     grep "^$1=" $2 | cut -d'=' -f2
 }
-
-# Fix properties
-fix_prop() {
-    COMMENT="# extra prop added by WSAGASCRIPT"
-
-    echo "-> fixing $1"
-    echo "$COMMENT" >> $2
-
-    remove_append "ro.product.$1.brand" "$PRODUCT_BRAND" $2
-    remove_append "ro.product.$1.device" "$TARGET_DEVICE" $2
-    remove_append "ro.product.$1.manufacturer" "$PRODUCT_MANUFACTURER" $2
-    remove_append "ro.product.$1.model" "$PRODUCT_MODEL" $2
-    remove_append "ro.product.$1.name" "$TARGET_PRODUCT" $2
-    remove_append "ro.build.product" "$TARGET_DEVICE" $2
-
-    BUILD_NUMBER=$(get_prop "ro.$1.build.version.incremental" $2)
-    BUILD_ID=$(get_prop "ro.$1.build.id" $2)
-    BUILD_TYPE=$(get_prop "ro.$1.build.type" $2)
-    BUILD_TAGS=$(get_prop "ro.$1.build.tags" $2)
-    PLATFORM_VERSION=$(get_prop "ro.$1.build.version.release" $2)
-    TARGET_BUILD_VARIANT=$(get_prop "ro.$1.build.type" $2)
-    BUILD_VERSION_TAGS=$(get_prop "ro.$1.build.tags" $2)
-
-    BUILD_FLAVOR="$TARGET_PRODUCT-$TARGET_BUILD_VARIANT"
-    BUILD_DESC="$BUILD_FLAVOR $PLATFORM_VERSION $BUILD_ID $BUILD_NUMBER $BUILD_VERSION_TAGS"
-    BUILD_FINGERPRINT="$PRODUCT_BRAND/$TARGET_PRODUCT/$TARGET_DEVICE:$PLATFORM_VERSION/$BUILD_ID/$BUILD_NUMBER:$TARGET_BUILD_VARIANT/$BUILD_VERSION_TAGS"
-
-    remove_append "ro.build.flavor" "$BUILD_FLAVOR" $2
-    remove_append "ro.build.description" "$BUILD_DESC" $2
-    remove_append "ro.$1.build.fingerprint" "$BUILD_FINGERPRINT" $2
-}
-
-echo "Modifing build.prop for each image"
-fix_prop system $MountPointSystem/system/build.prop
-fix_prop vendor $MountPointVendor/build.prop
-fix_prop product $MountPointProduct/build.prop
-fix_prop system_ext $MountPointSystemExt/build.prop
 
 printf 'removing duplicate apps from system\n'
 rm -Rf $InstallDir/apex/com.android.extservices/
